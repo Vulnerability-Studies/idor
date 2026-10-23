@@ -26,8 +26,8 @@ def login(username):
 def get_order(order_id):
     if "org_id" not in session:
         return redirect("/login/alice")
-    # VULN: combo — correctly uses session org_id by default, but an "internal debugging" header
-    # overrides it, and that header was never meant to be client-reachable in production
+    # VULN: combo - session org_id is the default, but an "internal debugging" header that
+    # was never meant to be client-reachable in production takes precedence when present
     org_id = request.headers.get("X-Debug-Org-Id", type=int) or session["org_id"]
     order = ORDERS.get((org_id, order_id))
     if not order:
@@ -38,7 +38,7 @@ def get_order(order_id):
 @app.get("/")
 def index():
     return (
-        "Pagebound Books — combo demo (composite id + header override). "
+        "Pagebound Books - combo demo (composite id + header override). "
         "Try /login/alice then /orders/1 (yours), then again with header X-Debug-Org-Id: 200"
     )
 

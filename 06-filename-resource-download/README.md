@@ -1,4 +1,4 @@
-# 06 — Filename-Based Resource Download
+# 06 - Filename-Based Resource Download
 
 Port: 5006
 

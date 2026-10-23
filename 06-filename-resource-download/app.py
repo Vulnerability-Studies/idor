@@ -6,8 +6,8 @@ app.secret_key = "lab-secret-not-for-prod"
 USERS = {"alice": 1, "bob": 2}
 
 RECEIPTS = {
-    "receipt-1001.txt": {"user_id": 1, "contents": "Receipt #1001 — Dune — $18.99 — Alice"},
-    "receipt-1002.txt": {"user_id": 2, "contents": "Receipt #1002 — Project Hail Mary — $15.50 — Bob"},
+    "receipt-1001.txt": {"user_id": 1, "contents": "Receipt #1001 - Dune - $18.99 - Alice"},
+    "receipt-1002.txt": {"user_id": 2, "contents": "Receipt #1002 - Project Hail Mary - $15.50 - Bob"},
 }
 
 
@@ -26,14 +26,14 @@ def download(filename):
     receipt = RECEIPTS.get(filename)
     if not receipt:
         return "not found", 404
-    # VULN: filename alone determines the resource served, ownership never checked
+    # VULN: filename alone determines the resource served, with no ownership check
     return Response(receipt["contents"], mimetype="text/plain")
 
 
 @app.get("/")
 def index():
     return (
-        "Pagebound Books — receipt download demo. "
+        "Pagebound Books - receipt download demo. "
         "Try /login/alice then /downloads/receipt-1001.txt, then /downloads/receipt-1002.txt"
     )
 

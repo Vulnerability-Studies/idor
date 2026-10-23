@@ -30,15 +30,15 @@ def get_order(org_id, order_id):
     order = ORDERS.get((org_id, order_id))
     if not order:
         return "not found", 404
-    # VULN: org_id is taken straight from the URL instead of session["org_id"] — the composite
-    # key *looks* safe (order_id 1 alone isn't enough) but the org half isn't actually validated
+    # VULN: org_id is taken straight from the URL instead of session["org_id"]. The composite
+    # key appears safe since order_id 1 alone is insufficient, but there is no validation on the org half.
     return jsonify(order)
 
 
 @app.get("/")
 def index():
     return (
-        "Pagebound Books Marketplace — composite id demo. "
+        "Pagebound Books Marketplace - composite id demo. "
         "Try /login/alice then /org/100/orders/1 (yours), then /org/200/orders/1 (not yours)"
     )
 

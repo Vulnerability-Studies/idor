@@ -23,7 +23,7 @@ def login(username):
 def profile():
     if "user_id" not in session:
         return redirect("/login/alice")
-    # VULN: trusts X-User-Id header over the actual session user
+    # VULN: X-User-Id header takes precedence over the session, with no check that it matches
     header_user_id = request.headers.get("X-User-Id", type=int)
     effective_id = header_user_id if header_user_id is not None else session["user_id"]
     data = PROFILES.get(effective_id)
@@ -35,7 +35,7 @@ def profile():
 @app.get("/")
 def index():
     return (
-        "Pagebound Books — profile demo. "
+        "Pagebound Books - profile demo. "
         "Try /login/alice then GET /profile, then again with header X-User-Id: 2"
     )
 

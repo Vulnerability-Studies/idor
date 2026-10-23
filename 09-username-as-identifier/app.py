@@ -26,14 +26,14 @@ def wishlist(username):
     items = WISHLISTS.get(username)
     if items is None:
         return "not found", 404
-    # VULN: username in the path is used directly as the lookup key, never compared to session["user"]
+    # VULN: username in the path is the lookup key, with no comparison to session["user"]
     return jsonify({"username": username, "wishlist": items})
 
 
 @app.get("/")
 def index():
     return (
-        "Pagebound Books — wishlist demo. "
+        "Pagebound Books - wishlist demo. "
         "Try /login/alice then /users/alice/wishlist, then /users/bob/wishlist"
     )
 

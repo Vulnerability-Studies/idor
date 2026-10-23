@@ -1,4 +1,4 @@
-# 10 — Composite ID (Multi-Tenant)
+# 10 - Composite ID (Multi-Tenant)
 
 Port: 5010
 

@@ -11,8 +11,8 @@ ORDERS_BY_UUID = {
 }
 
 INVOICE_FILES = {
-    "a1a1a1a1-aaaa-aaaa-aaaa-a1a1a1a1a1a1": "Invoice — Dune — Alice — $18.99",
-    "b2b2b2b2-bbbb-bbbb-bbbb-b2b2b2b2b2b2": "Invoice — Project Hail Mary — Bob — $15.50",
+    "a1a1a1a1-aaaa-aaaa-aaaa-a1a1a1a1a1a1": "Invoice - Dune - Alice - $18.99",
+    "b2b2b2b2-bbbb-bbbb-bbbb-b2b2b2b2b2b2": "Invoice - Project Hail Mary - Bob - $15.50",
 }
 
 
@@ -28,7 +28,7 @@ def login(username):
 def my_recent_orders():
     if "user_id" not in session:
         return redirect("/login/alice")
-    # VULN (leak half of the combo): meant to be "my" orders, but actually returns everyone's UUIDs
+    # VULN (leak half of the combo): named "my recent orders" but the response body contains every user's UUIDs
     return jsonify({"all_order_uuids": list(ORDERS_BY_UUID.keys())})
 
 
@@ -39,14 +39,14 @@ def invoice_download(uuid):
     contents = INVOICE_FILES.get(uuid)
     if not contents:
         return "not found", 404
-    # VULN (download half of the combo): filename is the whole access control, no ownership check
+    # VULN (download half of the combo): the filename is the only access control, with no ownership check
     return Response(contents, mimetype="text/plain")
 
 
 @app.get("/")
 def index():
     return (
-        "Pagebound Books — combo demo (leaked uuid + filename download). "
+        "Pagebound Books - combo demo (leaked uuid + filename download). "
         "Try /login/alice then /api/my-recent-orders to see every uuid, "
         "then /invoices/<someone else's uuid>.txt"
     )

@@ -47,14 +47,14 @@ def order_by_token(token):
     order = ORDERS.get(order_id)
     if not order:
         return "not found", 404
-    # VULN: token "looks" opaque but is just base64 of the int id, and ownership is never checked
+    # VULN: token is opaque-looking but is just base64 of the int id, with no ownership check
     return jsonify(order)
 
 
 @app.get("/")
 def index():
     return (
-        "Pagebound Books — encoded order token demo. "
+        "Pagebound Books - encoded order token demo. "
         "Try /login/alice then /my-order-token, decode it, then try the neighboring int re-encoded"
     )
 

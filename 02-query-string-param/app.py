@@ -27,13 +27,13 @@ def get_invoice():
     invoice = INVOICES.get(invoice_id)
     if not invoice:
         return "not found", 404
-    # VULN: id comes from query string, ownership never checked
+    # VULN: id comes from query string, no ownership check
     return jsonify(invoice)
 
 
 @app.get("/")
 def index():
-    return "Pagebound Books — invoice lookup demo. Try /login/alice then /invoice?invoice_id=101"
+    return "Pagebound Books - invoice lookup demo. Try /login/alice then /invoice?invoice_id=101"
 
 
 if __name__ == "__main__":

@@ -28,14 +28,14 @@ def account_details():
     account = ACCOUNTS.get(account_id)
     if not account:
         return "not found", 404
-    # VULN: account_id taken from JSON body, never compared to session user_id
+    # VULN: account_id taken from JSON body, no comparison to session user_id
     return jsonify(account)
 
 
 @app.get("/")
 def index():
     return (
-        "Pagebound Books — account details demo. "
+        "Pagebound Books - account details demo. "
         "Try /login/alice then POST /api/account/details with JSON body {\"account_id\": 2}"
     )
 

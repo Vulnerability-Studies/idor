@@ -33,7 +33,7 @@ class Query(graphene.ObjectType):
     user = graphene.Field(User, id=graphene.Int(required=True))
 
     def resolve_user(root, info, id):
-        # VULN: resolves any user id requested, nested orders included, no ownership/session check at all
+        # VULN: returns data for any user id requested, nested orders included, with no ownership or session check
         if id not in NAMES:
             return None
         return User(id=id, name=NAMES[id])
@@ -63,7 +63,7 @@ def graphql_endpoint():
 @app.get("/")
 def index():
     return (
-        "Pagebound Books — GraphQL demo. "
+        "Pagebound Books - GraphQL demo. "
         "Try /login/alice then POST /graphql with JSON body "
         '{"query": "{ user(id: 2) { name orders { id book total } } }"}'
     )

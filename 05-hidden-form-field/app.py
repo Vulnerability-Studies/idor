@@ -44,7 +44,7 @@ def edit_review():
     review = REVIEWS.get(review_id)
     if not review:
         return "not found", 404
-    # VULN: review_id comes from a hidden field the client fully controls, ownership never checked
+    # VULN: review_id comes from a hidden field under client control, with no ownership check
     review["text"] = new_text
     return f"saved: {review}"
 
@@ -52,7 +52,7 @@ def edit_review():
 @app.get("/")
 def index():
     return (
-        "Pagebound Books — review edit demo. "
+        "Pagebound Books - review edit demo. "
         "Try /login/alice then /reviews/edit-form/1, then resubmit with a different hidden review_id"
     )
 

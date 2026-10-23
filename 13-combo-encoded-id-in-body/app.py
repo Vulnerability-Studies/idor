@@ -49,7 +49,7 @@ def cancel_order():
     order = ORDERS.get(order_id)
     if not order:
         return "not found", 404
-    # VULN: combo — id is obscured by encoding AND hidden inside a POST body, ownership never checked either way
+    # VULN: combo - id is obscured by encoding and hidden inside a POST body, with no ownership check either way
     order["status"] = "cancelled"
     return jsonify(order)
 
@@ -57,7 +57,7 @@ def cancel_order():
 @app.get("/")
 def index():
     return (
-        "Pagebound Books — combo demo (encoded id + body field). "
+        "Pagebound Books - combo demo (encoded id + body field). "
         "Try /login/alice then /my-order-token, decode it, re-encode order id 2, "
         "then POST /api/orders/cancel with JSON body {\"order_token\": \"<token for id 2>\"}"
     )

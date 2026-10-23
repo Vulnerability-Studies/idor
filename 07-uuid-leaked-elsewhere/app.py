@@ -35,14 +35,14 @@ def order_by_uuid(uuid):
     order = ORDERS_BY_UUID.get(uuid)
     if not order:
         return "not found", 404
-    # VULN: UUID is unguessable on its own, but it leaked via recent-activity AND ownership is never checked here
+    # VULN: UUID is unguessable on its own, but it is exposed via recent-activity, with no ownership check here
     return jsonify(order)
 
 
 @app.get("/")
 def index():
     return (
-        "Pagebound Books — order-by-uuid demo. "
+        "Pagebound Books - order-by-uuid demo. "
         "Try GET /api/public/recent-activity to find UUIDs, then /login/alice then /orders/by-uuid/<uuid>"
     )
 

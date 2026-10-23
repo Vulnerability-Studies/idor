@@ -37,7 +37,7 @@ def get_orders_batch():
         return redirect("/login/alice")
     body = request.get_json(force=True, silent=True) or {}
     ids = body.get("ids", [])
-    # VULN: the bulk variant was added later and never got the same ownership check as the single endpoint
+    # VULN: the bulk variant lacks the ownership check present in the single-order endpoint above
     results = [ORDERS[i] for i in ids if i in ORDERS]
     return jsonify(results)
 
@@ -45,7 +45,7 @@ def get_orders_batch():
 @app.get("/")
 def index():
     return (
-        "Pagebound Books — batch order lookup demo. "
+        "Pagebound Books - batch order lookup demo. "
         "Try /login/alice then POST /api/orders/batch with JSON body {\"ids\": [1, 2, 3]}"
     )
 

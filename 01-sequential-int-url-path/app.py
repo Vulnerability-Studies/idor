@@ -27,13 +27,13 @@ def get_order(order_id):
     order = ORDERS.get(order_id)
     if not order:
         return "not found", 404
-    # VULN: never checks order["user_id"] == session["user_id"]
+    # VULN: no comparison of order["user_id"] to session["user_id"]
     return jsonify(order)
 
 
 @app.get("/")
 def index():
-    return "Pagebound Books — order lookup demo. Try /login/alice then /orders/1"
+    return "Pagebound Books - order lookup demo. Try /login/alice then /orders/1"
 
 
 if __name__ == "__main__":

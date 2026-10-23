@@ -1,5 +1,5 @@
-# 12 — GraphQL, Nested IDs in One Query
+# 12 - GraphQL, Nested IDs in One Query
 
 Port: 5012
 
-Tip: one query argument controls more than you'd think.
+Tip: changing one query argument reaches further than you'd think.

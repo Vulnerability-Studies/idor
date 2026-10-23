@@ -1,4 +1,4 @@
-# 09 — Username/Email as Identifier
+# 09 - Username/Email as Identifier
 
 Port: 5009
 
