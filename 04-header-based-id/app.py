@@ -1,7 +1,6 @@
-from flask import Flask, session, jsonify, request, redirect
+from flask import Flask, jsonify, request, make_response
 
 app = Flask(__name__)
-app.secret_key = "lab-secret-not-for-prod"
 
 USERS = {"alice": 1, "bob": 2}
 
@@ -15,18 +14,20 @@ PROFILES = {
 def login(username):
     if username not in USERS:
         return "unknown user", 404
-    session["user_id"] = USERS[username]
-    return f"logged in as {username} (user_id={USERS[username]})"
+    user_id = USERS[username]
+    resp = make_response(f"logged in as {username}. Send the X-User-Id header on subsequent requests.")
+    # VULN: the server hands the client its own user id in a header and trusts
+    # whatever value the client echoes back, with no server-side session or signature.
+    resp.headers["X-User-Id"] = str(user_id)
+    return resp
 
 
 @app.get("/profile")
 def profile():
-    if "user_id" not in session:
-        return redirect("/login/alice")
-    # VULN: X-User-Id header takes precedence over the session, with no check that it matches
     header_user_id = request.headers.get("X-User-Id", type=int)
-    effective_id = header_user_id if header_user_id is not None else session["user_id"]
-    data = PROFILES.get(effective_id)
+    if header_user_id is None:
+        return "missing X-User-Id header, log in first", 401
+    data = PROFILES.get(header_user_id)
     if not data:
         return "not found", 404
     return jsonify(data)
@@ -36,7 +37,8 @@ def profile():
 def index():
     return (
         "Pagebound Books - profile demo. "
-        "Try /login/alice then GET /profile, then again with header X-User-Id: 2"
+        "Try /login/alice, note the X-User-Id response header, "
+        "then GET /profile sending that header back."
     )
 
 
